@@ -1,8 +1,34 @@
 package cron_test
 
-import "testing"
-import "github.com/haleyrc/cron"
+import (
+	"testing"
+	"time"
 
+	"github.com/haleyrc/cron"
+)
+
+func TestParseDay(t *testing.T) {
+	tests := []struct {
+		Want cron.Day
+		In   time.Weekday
+	}{
+		{cron.Sunday, time.Sunday},
+		{cron.Monday, time.Monday},
+		{cron.Tuesday, time.Tuesday},
+		{cron.Wednesday, time.Wednesday},
+		{cron.Thursday, time.Thursday},
+		{cron.Friday, time.Friday},
+		{cron.Saturday, time.Saturday},
+	}
+
+	for _, test := range tests {
+		want := cron.Day(test.Want)
+		got := cron.ParseDay(test.In)
+		if want != got {
+			t.Errorf("expected %d to be %d, but wasn't", want, got)
+		}
+	}
+}
 func TestHasDayIdentity(t *testing.T) {
 	tests := []struct {
 		Title string
@@ -101,7 +127,11 @@ func TestHasDayCombination(t *testing.T) {
 		for _, obj := range test.Objs {
 			got := test.Sub.Has(obj)
 			if test.Want != got {
-				t.Errorf("%s: comparison failed: %d doesn't have %d", test.Title, test.Sub, obj)
+				if test.Want {
+					t.Errorf("%s: comparison failed: %b doesn't have %b", test.Title, test.Sub, obj)
+				} else {
+					t.Errorf("%s: comparison failed: %b has %b", test.Title, test.Sub, obj)
+				}
 			}
 		}
 	}
