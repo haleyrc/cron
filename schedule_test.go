@@ -215,25 +215,3 @@ func ExampleWithSchedule_didntRunWrongDay() {
 
 	// Output:
 }
-
-func ExampleWithSchedule_withHistory() {
-	Monday := time.Date(2018, time.Month(02), 12, 0, 0, 0, 0, tz)
-	OnceOnMonday := func(last time.Time, buffer time.Duration) func(time.Time) bool {
-		return func(t time.Time) bool {
-			bottom := t.Add(time.Duration(-1) * buffer)
-			shouldRun := last.Before(bottom) && OnMonday(t)
-
-			if shouldRun {
-				last = time.Now()
-			}
-
-			return shouldRun
-		}
-	}
-
-	var last time.Time
-	f := WithSchedule(func() { fmt.Println("I ran") }, OnceOnMonday(last, 23*time.Hour))
-	f(Monday)
-
-	// Output: I ran
-}
