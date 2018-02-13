@@ -19,7 +19,7 @@ func TestMinuteHas(t *testing.T) {
 		h := cron.ParseMinute(0)
 
 		if !h.Has(h) {
-			t.Errorf("expected hour to have self, but didn't")
+			t.Errorf("expected minute to have self, but didn't")
 		}
 	}
 

@@ -24,7 +24,7 @@ const (
 	EveryDay = 0x7F
 	// WeekDays is the mask containing only the weekdays in the bit field: 011 1110.
 	WeekDays = 0x3E
-	// WeekEnds is the mask containing only the weekends in teh bit field: 100 0001.
+	// WeekEnds is the mask containing only the weekends in the bit field: 100 0001.
 	WeekEnds = 0x41
 )
 
