@@ -31,6 +31,9 @@ func New(ctx context.Context, d time.Duration, jobs ...func(time.Time)) *Daemon 
 	}
 }
 
+// Interval returns the daemon's internal interval value.
+func (d *Daemon) Interval() time.Duration { return d.interval }
+
 // Run is the main event loop for the daemon. It performs the work of listening
 // on a ticker channel, as well as the cancel channel. If cancel is closed, it
 // stops the ticker and return an error signaling an expected cancel. Otherwise,
@@ -47,6 +50,7 @@ func (d *Daemon) Run() error {
 			t := time.Now()
 			for _, f := range d.jobs {
 				f(t)
+				time.Sleep(50 * time.Millisecond)
 			}
 		default:
 		}
