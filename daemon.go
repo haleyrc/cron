@@ -50,7 +50,7 @@ func (d *Daemon) Run() error {
 			t := time.Now()
 			for _, f := range d.jobs {
 				f(t)
-				time.Sleep(50 * time.Millisecond)
+				time.Sleep(100 * time.Millisecond)
 			}
 		default:
 		}
