@@ -26,7 +26,7 @@ func TestDaemon(t *testing.T) {
 	}()
 
 	if err := d.Run(); err != nil {
-		if err != ContextCanceled {
+		if err != ErrContextCanceled {
 			t.Errorf("unexpected error: %v", err)
 		}
 	}

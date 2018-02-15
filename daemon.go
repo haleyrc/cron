@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-// ContextCanceled indicates that the client signaled the Daemon to finish.
-var ContextCanceled = errors.New("context canceled by parent")
+// ErrContextCanceled indicates that the client signaled the Daemon to finish.
+var ErrContextCanceled = errors.New("context canceled by parent")
 
 // Daemon is a simple structure for running multiple functions at a given
 // interval. It can be stopped by closing the cancel channel, usually by calling
@@ -45,11 +45,13 @@ func (d *Daemon) Run() error {
 		select {
 		case <-d.cancel:
 			ticker.Stop()
-			return ContextCanceled
+			return ErrContextCanceled
 		case <-ticker.C:
 			t := time.Now()
 			for _, f := range d.jobs {
 				f(t)
+				// TODO (RCH): This isn't really a function of our cron job and should
+				// be left to the client.
 				time.Sleep(100 * time.Millisecond)
 			}
 		default:
